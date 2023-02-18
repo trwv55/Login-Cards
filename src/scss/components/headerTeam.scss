@@ -1,0 +1,53 @@
+@import "../variables.scss";
+
+.header {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  height: 265px;
+  background-color: $violet;
+  text-align: center;
+
+  .header__container {
+    max-width: 846px;
+    width: 100%;
+    margin: 0 auto;
+    position: relative;
+  
+    .header__button {
+      width: 81px;
+      height: 38px;
+      border: 1px solid #F8F8F8;
+      border-radius: 8px;
+      background-color: transparent;
+      font-size: 16px;
+      line-height: 136.19%;
+      color: #F8F8F8;
+      cursor: pointer;
+      position: absolute;
+      top: -24px;
+      right: -136px;
+      &:hover {
+        background-color: #fff;
+        color: #000;
+      }
+    }
+
+    .header__title {
+      font-size: 64px;
+      line-height: 75px;
+      color: #FFFFFF;
+      font-weight: 400;
+    }
+
+    .header__text {
+      font-size: 20px;
+      line-height: 23px;
+      text-align: center;
+      color: #F8F8F8;
+      font-weight: 400;
+      margin-top: 16px;
+    }
+  }
+}
