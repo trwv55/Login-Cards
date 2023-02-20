@@ -1,15 +1,60 @@
 import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchLogin, selectLogin } from '../redux/slices/login';
+import { Navigate } from 'react-router-dom';
+import axios from 'axios';
 
 const LoginPage = () => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [passwordConfirmation, setPasswordConfirmation] = useState('');
+  const [inputValues, setInputValues] = useState({
+    name: '',
+    email: '',
+    password: '',
+    passwordConfirmation: '',
+  });
+  const [errorName, setErrorName] = useState(null);
+  const [errorEmail, setErrorEmail] = useState(null);
+  const [errorPassword, setErrorPassword] = useState(null);
+  const [errorPasswordConfirm, setErrorPasswordConfirm] = useState(null);
+  const emailValidation = !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(inputValues.email);
+  const [isAuth, setIsAuth] = useState(false);
+  const dispatch = useDispatch();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Form submitted!');
+
+    if (emailValidation) {
+      setErrorEmail('Некорректный email');
+    } else {
+      setErrorEmail(null);
+    }
+    if (inputValues.name.length < 3) {
+      setErrorName('Неккорректное имя');
+    } else {
+      setErrorName(null);
+    }
+    if (inputValues.password.length < 8) {
+      setErrorPassword('Пароль должен быть минимум 8 символов');
+    } else {
+      setErrorPassword(null);
+    }
+    if (inputValues.password !== inputValues.passwordConfirmation) {
+      setErrorPasswordConfirm('Пароль отличается');
+    } else {
+      setErrorPasswordConfirm(null);
+    }
+
+    if (errorName || errorEmail || errorPassword || errorPasswordConfirm) {
+      return;
+    } else {
+      dispatch(fetchLogin());
+      setIsAuth(true);
+    }
   };
+
+  if (isAuth) {
+    return <Navigate to="/team" />;
+  }
+
   return (
     <div className="layout">
       <div className="form__wrapper">
@@ -21,14 +66,15 @@ const LoginPage = () => {
             </label>
             <div className="login__item-error">
               <input
-                className="input name-input"
+                className={`input ${Boolean(errorName) ? 'input-error' : ''}`}
                 type="text"
                 id="name"
                 placeholder="Артур"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                value={inputValues.name}
+                onChange={(e) => setInputValues({ ...inputValues, name: e.target.value })}
                 required
               />
+              {errorName && <p className="error error-name">{errorName}</p>}
             </div>
           </div>
           <div className="login__item email__wrapper">
@@ -37,14 +83,16 @@ const LoginPage = () => {
             </label>
             <div className="login__item-error">
               <input
-                className="input email-input"
+                className={`input ${Boolean(errorEmail) ? 'input-error' : ''}`}
                 type="email"
                 id="email"
+                name="email"
                 placeholder="example@mail.ru"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={inputValues.email}
+                onChange={(e) => setInputValues({ ...inputValues, email: e.target.value })}
                 required
               />
+              {errorEmail && <p className="error error-email">{errorEmail}</p>}
             </div>
           </div>
           <div className="login__item password__wrapper">
@@ -53,30 +101,36 @@ const LoginPage = () => {
             </label>
             <div className="login__item-error password-error">
               <input
-                className="input password-input"
+                className={`input ${Boolean(errorPassword) ? 'input-error' : ''}`}
                 type="password"
                 id="password"
                 placeholder="******"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                value={inputValues.password}
+                onChange={(e) => setInputValues({ ...inputValues, password: e.target.value })}
                 required
               />
+              {errorPassword && <p className="error error-pass">{errorPassword}</p>}
             </div>
           </div>
           <div className="login__item password__wrapper">
             <label className="login__title password__wrapper-title" htmlFor="password">
               Подтвердите пароль
             </label>
-            <div className="login__item-error">
+            <div className="login__item-error password-error">
               <input
-                className="input"
+                className={`input ${Boolean(errorPasswordConfirm) ? 'input-error' : ''}`}
                 type="password"
                 id="passwordConfirmation"
                 placeholder="******"
-                value={passwordConfirmation}
-                onChange={(e) => setPasswordConfirmation(e.target.value)}
+                value={inputValues.passwordConfirmation}
+                onChange={(e) =>
+                  setInputValues({ ...inputValues, passwordConfirmation: e.target.value })
+                }
                 required
               />
+              {errorPasswordConfirm && (
+                <p className="error error-pass-conf">{errorPasswordConfirm}</p>
+              )}
             </div>
           </div>
           <button className="login__button" type="submit">

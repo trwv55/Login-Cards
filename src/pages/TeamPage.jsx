@@ -1,8 +1,12 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import CardTeam from '../components/CardTeam.jsx';
 import HeaderTeam from '../components/HeaderTeam.jsx';
+import { selectLogin } from '../redux/slices/login';
 
 const TeamPage = () => {
+  // const { data } = useSelector(selectLogin);
+
   const cards = new Array(8).fill(null);
 
   return (
