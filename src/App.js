@@ -4,7 +4,9 @@ import './scss/app.scss';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import LoginPage from './pages/LoginPage.jsx';
 import TeamPage from './pages/TeamPage.jsx';
-import HeaderTeam from './components/HeaderTeam.jsx';
+import CardPage from './pages/CardPage.jsx';
+import { useSelector } from 'react-redux';
+import { selectLogin } from './redux/slices/login';
 
 const App = () => {
   return (
@@ -13,6 +15,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<LoginPage />} />
           <Route path="/team" element={<TeamPage />} />
+          <Route path="/team/:id" element={<CardPage />} />
         </Routes>
       </div>
     </BrowserRouter>

@@ -1,23 +1,59 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import axios from 'axios';
+import React, { useEffect, useState, useRef } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import CardTeam from '../components/CardTeam.jsx';
 import HeaderTeam from '../components/HeaderTeam.jsx';
-import { selectLogin } from '../redux/slices/login';
+import { fetchLogin, selectLogin } from '../redux/slices/login';
 
 const TeamPage = () => {
-  // const { data } = useSelector(selectLogin);
+  const [currentPage, setCurrentPage] = useState(2);
+  const dispatch = useDispatch();
+  const { data } = useSelector(selectLogin);
+  const [allPages, setAllPages] = useState();
+  const loadMoreButtonRef = useRef(null);
+  console.log(loadMoreButtonRef.current);
 
-  const cards = new Array(8).fill(null);
+  useEffect(() => {
+    dispatch(fetchLogin());
+  }, []);
+
+  useEffect(() => {
+    setAllPages(data?.data);
+  }, [data]);
+
+  const getMorePage = async (pageNum) => {
+    try {
+      const responce = await axios.get(`https://reqres.in/api/users?page=${pageNum}`);
+      const { data, total_pages } = responce.data;
+      setAllPages((prevState) => [...prevState, ...data]);
+      setCurrentPage(pageNum + 1);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleMorePage = () => {
+    getMorePage(currentPage);
+  };
+
+  useEffect(() => {
+    loadMoreButtonRef.current.scrollIntoView({ behavior: 'smooth' });
+  }, [allPages]);
 
   return (
     <div className="team">
       <div className="team__header">
-        <HeaderTeam />
+        <HeaderTeam href="/team" />
       </div>
       <div className="team__main">
-        {cards.map((_, index) => (
-          <CardTeam key={index} />
+        {allPages?.map((card, index) => (
+          <CardTeam key={index} card={card} />
         ))}
+        <div className="button__wrapper">
+          <button ref={loadMoreButtonRef} className="more" onClick={handleMorePage}>
+            Показать еще
+          </button>
+        </div>
       </div>
     </div>
   );

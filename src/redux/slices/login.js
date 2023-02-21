@@ -14,7 +14,12 @@ const initialState = {
 const loginSlice = createSlice({
   name: 'login',
   initialState,
-  reducers: {},
+  reducers: {
+    logout(state) {
+      state.data = null;
+      state.status = 'loading';
+    },
+  },
   extraReducers: {
     [fetchLogin.pending]: (state) => {
       state.data = null;
@@ -24,10 +29,6 @@ const loginSlice = createSlice({
       state.data = action.payload;
       state.status = 'loaded';
     },
-    [fetchLogin.pending]: (state) => {
-      state.data = null;
-      state.status = 'loading';
-    },
     [fetchLogin.rejected]: (state) => {
       state.data = null;
       state.status = 'error';
@@ -36,4 +37,5 @@ const loginSlice = createSlice({
 });
 
 export const loginReducer = loginSlice.reducer;
-export const selectLogin = (state) => state.login.data;
+export const selectLogin = (state) => state.login;
+export const logout = createAction('login/logout');

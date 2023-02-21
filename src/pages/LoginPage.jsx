@@ -43,17 +43,26 @@ const LoginPage = () => {
       setErrorPasswordConfirm(null);
     }
 
-    if (errorName || errorEmail || errorPassword || errorPasswordConfirm) {
-      return;
-    } else {
-      dispatch(fetchLogin());
-      setIsAuth(true);
-    }
+    handleRedirect();
   };
 
-  if (isAuth) {
-    return <Navigate to="/team" />;
+  function handleRedirect() {
+    console.log(errorName);
+    console.log(errorPassword);
+    console.log(errorPasswordConfirm);
+
+    // if (errorName || errorEmail || errorPassword || errorPasswordConfirm) {
+    //   try {
+    //     dispatch(fetchLogin());
+    //   } catch (error) {
+    //     console.error(error);
+    //   }
+    // }
   }
+
+  // if (isAuth) {
+  //   return <Navigate to="/team" />;
+  // }
 
   return (
     <div className="layout">
