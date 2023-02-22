@@ -1,8 +1,5 @@
 import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchLogin, selectLogin } from '../redux/slices/login';
-import { Navigate } from 'react-router-dom';
-import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const LoginPage = () => {
   const [inputValues, setInputValues] = useState({
@@ -11,13 +8,16 @@ const LoginPage = () => {
     password: '',
     passwordConfirmation: '',
   });
-  const [errorName, setErrorName] = useState(null);
+
+  const [errors, setErrors] = useState({
+    errorName: '',
+    errorPassword: '',
+    errorPasswordConfirm: '',
+  });
   const [errorEmail, setErrorEmail] = useState(null);
-  const [errorPassword, setErrorPassword] = useState(null);
-  const [errorPasswordConfirm, setErrorPasswordConfirm] = useState(null);
   const emailValidation = !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(inputValues.email);
-  const [isAuth, setIsAuth] = useState(false);
-  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  let formIsValid = true;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -27,42 +27,35 @@ const LoginPage = () => {
     } else {
       setErrorEmail(null);
     }
+
     if (inputValues.name.length < 3) {
-      setErrorName('Неккорректное имя');
+      setErrors((prevState) => ({ ...prevState, errorName: 'Неккорректное имя' }));
+      formIsValid = false;
     } else {
-      setErrorName(null);
+      setErrors((prevState) => ({ ...prevState, errorName: '' }));
     }
+
     if (inputValues.password.length < 8) {
-      setErrorPassword('Пароль должен быть минимум 8 символов');
+      setErrors((prevState) => ({
+        ...prevState,
+        errorPassword: 'Пароль должен быть минимум 8 символов',
+      }));
+      formIsValid = false;
     } else {
-      setErrorPassword(null);
+      setErrors((prevState) => ({ ...prevState, errorPassword: '' }));
     }
+
     if (inputValues.password !== inputValues.passwordConfirmation) {
-      setErrorPasswordConfirm('Пароль отличается');
+      setErrors((prevState) => ({ ...prevState, errorPasswordConfirm: 'Пароль отличается' }));
+      formIsValid = false;
     } else {
-      setErrorPasswordConfirm(null);
+      setErrors((prevState) => ({ ...prevState, errorPasswordConfirm: '' }));
     }
 
-    handleRedirect();
+    if (formIsValid) {
+      navigate('/team');
+    }
   };
-
-  function handleRedirect() {
-    console.log(errorName);
-    console.log(errorPassword);
-    console.log(errorPasswordConfirm);
-
-    // if (errorName || errorEmail || errorPassword || errorPasswordConfirm) {
-    //   try {
-    //     dispatch(fetchLogin());
-    //   } catch (error) {
-    //     console.error(error);
-    //   }
-    // }
-  }
-
-  // if (isAuth) {
-  //   return <Navigate to="/team" />;
-  // }
 
   return (
     <div className="layout">
@@ -75,7 +68,7 @@ const LoginPage = () => {
             </label>
             <div className="login__item-error">
               <input
-                className={`input ${Boolean(errorName) ? 'input-error' : ''}`}
+                className={`input ${Boolean(errors.errorName) ? 'input-error' : ''}`}
                 type="text"
                 id="name"
                 placeholder="Артур"
@@ -83,7 +76,7 @@ const LoginPage = () => {
                 onChange={(e) => setInputValues({ ...inputValues, name: e.target.value })}
                 required
               />
-              {errorName && <p className="error error-name">{errorName}</p>}
+              {errors.errorName && <p className="error error-name">{errors.errorName}</p>}
             </div>
           </div>
           <div className="login__item email__wrapper">
@@ -110,7 +103,7 @@ const LoginPage = () => {
             </label>
             <div className="login__item-error password-error">
               <input
-                className={`input ${Boolean(errorPassword) ? 'input-error' : ''}`}
+                className={`input ${Boolean(errors.errorPassword) ? 'input-error' : ''}`}
                 type="password"
                 id="password"
                 placeholder="******"
@@ -118,7 +111,7 @@ const LoginPage = () => {
                 onChange={(e) => setInputValues({ ...inputValues, password: e.target.value })}
                 required
               />
-              {errorPassword && <p className="error error-pass">{errorPassword}</p>}
+              {errors.errorPassword && <p className="error error-pass">{errors.errorPassword}</p>}
             </div>
           </div>
           <div className="login__item password__wrapper">
@@ -127,7 +120,7 @@ const LoginPage = () => {
             </label>
             <div className="login__item-error password-error">
               <input
-                className={`input ${Boolean(errorPasswordConfirm) ? 'input-error' : ''}`}
+                className={`input ${Boolean(errors.errorPasswordConfirm) ? 'input-error' : ''}`}
                 type="password"
                 id="passwordConfirmation"
                 placeholder="******"
@@ -137,8 +130,8 @@ const LoginPage = () => {
                 }
                 required
               />
-              {errorPasswordConfirm && (
-                <p className="error error-pass-conf">{errorPasswordConfirm}</p>
+              {errors.errorPasswordConfirm && (
+                <p className="error error-pass-conf">{errors.errorPasswordConfirm}</p>
               )}
             </div>
           </div>

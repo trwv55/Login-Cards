@@ -3,15 +3,13 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import CardTeam from '../components/CardTeam.jsx';
 import HeaderTeam from '../components/HeaderTeam.jsx';
-import { fetchLogin, selectLogin } from '../redux/slices/login';
+import { fetchLogin, selectLogin, fetchMoreUsers } from '../redux/slices/login';
 
 const TeamPage = () => {
   const [currentPage, setCurrentPage] = useState(2);
   const dispatch = useDispatch();
   const { data } = useSelector(selectLogin);
   const [allPages, setAllPages] = useState();
-  const loadMoreButtonRef = useRef(null);
-  console.log(loadMoreButtonRef.current);
 
   useEffect(() => {
     dispatch(fetchLogin());
@@ -23,6 +21,7 @@ const TeamPage = () => {
 
   const getMorePage = async (pageNum) => {
     try {
+      // dispatch(fetchMoreUsers(pageNum));
       const responce = await axios.get(`https://reqres.in/api/users?page=${pageNum}`);
       const { data, total_pages } = responce.data;
       setAllPages((prevState) => [...prevState, ...data]);
@@ -35,10 +34,7 @@ const TeamPage = () => {
   const handleMorePage = () => {
     getMorePage(currentPage);
   };
-
-  useEffect(() => {
-    loadMoreButtonRef.current.scrollIntoView({ behavior: 'smooth' });
-  }, [allPages]);
+  console.log(allPages);
 
   return (
     <div className="team">
@@ -50,7 +46,7 @@ const TeamPage = () => {
           <CardTeam key={index} card={card} />
         ))}
         <div className="button__wrapper">
-          <button ref={loadMoreButtonRef} className="more" onClick={handleMorePage}>
+          <button className="more" onClick={handleMorePage}>
             Показать еще
           </button>
         </div>

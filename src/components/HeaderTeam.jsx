@@ -15,9 +15,11 @@ const HeaderTeam = () => {
   return (
     <div className="header">
       <div className="header__container">
-        <button className="header__button" onClick={handleExit}>
-          Выход
+        <button className="header__button button-mobile" onClick={handleExit}>
+          <span class="svg-icon"></span>
+          <span className="label">Выйти</span>
         </button>
+
         <h1 className="header__title">Наша команда</h1>
         <p className="header__text">
           Это опытные специалисты, хорошо разбирающиеся во всех задачах, которые ложатся на их

@@ -32,6 +32,54 @@
         background-color: #fff;
         color: #000;
       }
+
+                @media screen and (max-width: 1120px) {
+                  right: 0px;
+                }
+
+                     @media screen and (max-width: 850px) {
+                       right: 30px;
+                     }
+
+                            @media screen and (max-width: 850px) {
+                               right: 30px;
+                             }
+
+                                  @media screen and (max-width: $mobile) {
+                                    border: 1px solid transparent;
+                                    width: 0;
+                                    height: 0;
+                                    cursor: default;
+                                    &:hover {
+                                      background-color: transparent; 
+                                    }
+                                  }
+      
+        @media screen and (max-width: $mobile) {
+          .svg-icon {
+              position: relative;
+              display: inline-block;
+              cursor: pointer;
+              &::after {
+                position: absolute;
+                content: "";
+                background-image: url("../images/exit-mobile.svg");
+                background-repeat: no-repeat;
+                background-size: cover;
+                width: 18px;
+                height: 18px;
+                top: -24px;
+                right: 0;
+              }
+            }
+        }
+      
+
+             @media screen and (max-width: $mobile) {
+               .label {
+                display: none;
+               }
+             }
     }
 
     .header__title {
@@ -39,6 +87,11 @@
       line-height: 75px;
       color: #FFFFFF;
       font-weight: 400;
+
+      @media screen and (max-width: $mobile) {
+          font-size: 36px;
+          line-height: 42px;
+        }
     }
 
     .header__text {
@@ -48,6 +101,12 @@
       color: #F8F8F8;
       font-weight: 400;
       margin-top: 16px;
+
+      @media screen and (max-width: $mobile) {
+          font-size: 16px;
+          line-height: 19px;
+          text-align: center;
+        }
     }
   }
 }
