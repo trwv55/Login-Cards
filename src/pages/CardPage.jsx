@@ -31,13 +31,17 @@ const CardPage = () => {
   return (
     <div className="team">
       <div className="team__header">
-        <div className="header">
+        <div className="header header__card">
           <div className="header__container">
-            <button className="header__button" onClick={handleExit}>
-              Выход
+            <button className="header-button-exit" onClick={handleExit}>
+              <span className="svg-exit"></span>
+              <span className="label-exit">Выход</span>
             </button>
             <Link to={`/team/`}>
-              <button className="header__button header__button-back">Назад</button>
+              <button className="header__button-back">
+                <span className="svg-back"></span>
+                <span className="label-back">Назад</span>
+              </button>
             </Link>
             <div className="card__header">
               <img className="card__header-img" src={card?.avatar} alt="" />

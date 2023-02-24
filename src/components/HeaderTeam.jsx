@@ -9,6 +9,7 @@ const HeaderTeam = () => {
 
   const handleExit = () => {
     dispatch(logout());
+    localStorage.removeItem('likesId');
     navigate('/');
   };
 
@@ -16,7 +17,7 @@ const HeaderTeam = () => {
     <div className="header">
       <div className="header__container">
         <button className="header__button button-mobile" onClick={handleExit}>
-          <span class="svg-icon"></span>
+          <span className="svg-icon"></span>
           <span className="label">Выйти</span>
         </button>
 

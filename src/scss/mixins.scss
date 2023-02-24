@@ -1,0 +1,19 @@
+@mixin btn {
+  width: 81px;
+  height: 38px;
+  border: 1px solid #F8F8F8;
+  border-radius: 8px;
+  background-color: transparent;
+  font-size: 16px;
+  line-height: 136.19%;
+  color: #F8F8F8;
+  cursor: pointer;
+  // position: absolute;
+  // top: -24px;
+  // right: -136px;
+
+  &:hover {
+    background-color: #fff;
+    color: #000;
+  }
+}
