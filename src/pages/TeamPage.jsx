@@ -1,14 +1,16 @@
 import axios from 'axios';
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import CardTeam from '../components/CardTeam.jsx';
 import HeaderTeam from '../components/HeaderTeam.jsx';
-import { fetchLogin, selectLogin, fetchMoreUsers } from '../redux/slices/login';
+import { fetchLogin, selectLogin } from '../redux/slices/login';
+// import { selectFavorite } from '../redux/slices/favorite';
 
 const TeamPage = () => {
   const [currentPage, setCurrentPage] = useState(2);
   const dispatch = useDispatch();
   const { data } = useSelector(selectLogin);
+  // const { idList } = useSelector(selectFavorite);
   const [allPages, setAllPages] = useState();
 
   useEffect(() => {
@@ -23,7 +25,7 @@ const TeamPage = () => {
     try {
       // dispatch(fetchMoreUsers(pageNum));
       const responce = await axios.get(`https://reqres.in/api/users?page=${pageNum}`);
-      const { data, total_pages } = responce.data;
+      const { data } = responce.data;
       setAllPages((prevState) => [...prevState, ...data]);
       setCurrentPage(pageNum + 1);
     } catch (error) {
@@ -34,7 +36,6 @@ const TeamPage = () => {
   const handleMorePage = () => {
     getMorePage(currentPage);
   };
-  console.log(allPages);
 
   return (
     <div className="team">
