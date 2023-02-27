@@ -1,6 +1,11 @@
 @import "../variables.scss";
 @import "../mixins.scss";
 
+.header__card {
+
+    @media screen and (max-width: 680px) {
+      height: 432px;
+      }
 
 .header__container {
   position: relative;
@@ -166,6 +171,7 @@
       }
     }
 }
+}
     .page__main {
       max-width: 947px;
       width: 100%;
@@ -215,6 +221,7 @@
 
                         @media screen and (max-width: 955px) {
                           order: 1;
+                          margin-left: 30px;
                         }
           
          
@@ -253,8 +260,8 @@
       }
     }
 
-         @media screen and (max-width: 680px) {
-           .header {
-            height: 432px;
-           }
-         }
+        //  @media screen and (max-width: 680px) {
+        //    .header {
+        //     height: 432px;
+        //    }
+        //  }
